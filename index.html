@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cafe Sipsy Mocha | Self Order</title>
+<style>
+body{font-family:Arial, sans-serif;background:#f4f4f4;margin:0}
+header{background:#111;color:#fff;padding:15px;text-align:center}
+.container{padding:15px}
+.card{background:#fff;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.item{display:flex;justify-content:space-between;align-items:center}
+.qty button{padding:5px 10px;font-size:16px}
+.qty span{margin:0 10px;font-weight:bold}
+.btn{background:#25D366;color:#fff;text-align:center;padding:15px;border-radius:12px;font-weight:bold;margin:20px 0;cursor:pointer}
+.review{background:#4285F4}
+</style>
+<script>
+let cart = {};
+function getTable(){
+  const p=new URLSearchParams(window.location.search);
+  return p.get("table")||"Unknown";
+}
+function add(item){
+  cart[item]=(cart[item]||0)+1;
+  document.getElementById(item).innerText=cart[item];
+}
+function sub(item){
+  if(cart[item]>0){
+    cart[item]--;
+    document.getElementById(item).innerText=cart[item];
+  }
+}
+function order(){
+  let msg="☕ Cafe Sipsy Mocha Order\n🪑 Table: "+getTable()+"\n\n";
+  let hasItem=false;
+  for(let i in cart){
+    if(cart[i]>0){
+      msg+=i+" x "+cart[i]+"\n";
+      hasItem=true;
+    }
+  }
+  if(!hasItem){alert("Please add items");return;}
+  window.location.href="https://wa.me/919356830367?text="+encodeURIComponent(msg);
+}
+</script>
+</head>
+<body>
+<header>
+<h2>☕ Cafe Sipsy Mocha</h2>
+<p>Scan • Order • Relax</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<div class="item">
+<div>Espresso ₹59</div>
+<div class="qty">
+<button onclick="sub('Espresso')">-</button>
+<span id="Espresso">0</span>
+<button onclick="add('Espresso')">+</button>
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="item">
+<div>Cappuccino ₹89</div>
+<div class="qty">
+<button onclick="sub('Cappuccino')">-</button>
+<span id="Cappuccino">0</span>
+<button onclick="add('Cappuccino')">+</button>
+</div>
+</div>
+</div>
+
+<div class="btn" onclick="order()">📲 Send Order on WhatsApp</div>
+
+<div class="btn review" onclick="window.location.href='https://search.google.com/local/writereview?placeid=PLACE_ID_HERE'">
+⭐ Leave Google Review
+</div>
+
+</div>
+</body>
+</html>
