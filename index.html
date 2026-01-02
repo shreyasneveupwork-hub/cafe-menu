@@ -4,34 +4,68 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cafe Sipsy Mocha | Self Order</title>
+
 <style>
-body{font-family:Arial, sans-serif;background:#f4f4f4;margin:0}
-header{background:#111;color:#fff;padding:15px;text-align:center}
-.container{padding:15px}
-.card{background:#fff;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+body{margin:0;font-family:Arial,sans-serif;background:#f2f2f2}
+header{background:#111;color:#fff;text-align:center;padding:20px}
+.container{padding:15px;max-width:700px;margin:auto}
+.table-box{background:#fff;padding:12px;border-radius:12px;text-align:center;font-weight:bold;margin-bottom:15px}
+.section-title{margin:20px 0 10px;font-weight:bold}
+.card{background:#fff;border-radius:14px;padding:15px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
 .item{display:flex;justify-content:space-between;align-items:center}
-.qty button{padding:5px 10px;font-size:16px}
+.qty button{padding:6px 12px;font-size:16px}
 .qty span{margin:0 10px;font-weight:bold}
-.btn{background:#25D366;color:#fff;text-align:center;padding:15px;border-radius:12px;font-weight:bold;margin:20px 0;cursor:pointer}
+.total{font-size:18px;font-weight:bold;text-align:center;margin:15px 0}
+.btn{padding:16px;border-radius:14px;text-align:center;font-weight:bold;color:#fff;margin:10px 0;cursor:pointer}
+.whatsapp{background:#25D366}
 .review{background:#4285F4}
+footer{text-align:center;font-size:13px;color:#666;padding:10px}
 </style>
+
 <script>
-let cart = {};
+const prices={
+"Espresso":59,
+"Double Espresso":69,
+"Kwaha":89,
+"Honey Ginger Tea":89,
+"Americano":79,
+"Cafe Latte":89,
+"Cafe Mocha":99,
+"Cappuccino":89,
+"Hazelnut Cappuccino":99,
+"Irish Cappuccino":99,
+"Vanilla Cappuccino":99,
+"Caramel Cappuccino":99
+};
+
+let cart={};
+
 function getTable(){
   const p=new URLSearchParams(window.location.search);
   return p.get("table")||"Unknown";
 }
+
 function add(item){
   cart[item]=(cart[item]||0)+1;
   document.getElementById(item).innerText=cart[item];
+  updateTotal();
 }
+
 function sub(item){
   if(cart[item]>0){
     cart[item]--;
     document.getElementById(item).innerText=cart[item];
+    updateTotal();
   }
 }
-function order(){
+
+function updateTotal(){
+  let total=0;
+  for(let i in cart){total+=cart[i]*prices[i];}
+  document.getElementById("total").innerText="₹"+total;
+}
+
+function orderNow(){
   let msg="☕ Cafe Sipsy Mocha Order\n🪑 Table: "+getTable()+"\n\n";
   let hasItem=false;
   for(let i in cart){
@@ -41,11 +75,18 @@ function order(){
     }
   }
   if(!hasItem){alert("Please add items");return;}
+  msg+="\nTotal: "+document.getElementById("total").innerText;
   window.location.href="https://wa.me/919356830367?text="+encodeURIComponent(msg);
+}
+
+window.onload=function(){
+  document.getElementById("tableNo").innerText=getTable();
 }
 </script>
 </head>
+
 <body>
+
 <header>
 <h2>☕ Cafe Sipsy Mocha</h2>
 <p>Scan • Order • Relax</p>
@@ -53,34 +94,70 @@ function order(){
 
 <div class="container">
 
-<div class="card">
-<div class="item">
-<div>Espresso ₹59</div>
-<div class="qty">
-<button onclick="sub('Espresso')">-</button>
-<span id="Espresso">0</span>
-<button onclick="add('Espresso')">+</button>
-</div>
-</div>
-</div>
+<div class="table-box">Table No: <span id="tableNo"></span></div>
 
-<div class="card">
-<div class="item">
-<div>Cappuccino ₹89</div>
-<div class="qty">
-<button onclick="sub('Cappuccino')">-</button>
-<span id="Cappuccino">0</span>
-<button onclick="add('Cappuccino')">+</button>
-</div>
-</div>
-</div>
+<div class="section-title">🔥 Hot Beverages</div>
 
-<div class="btn" onclick="order()">📲 Send Order on WhatsApp</div>
+<div class="card"><div class="item">Espresso ₹59<div class="qty">
+<button onclick="sub('Espresso')">-</button><span id="Espresso">0</span><button onclick="add('Espresso')">+</button>
+</div></div></div>
+
+<div class="card"><div class="item">Double Espresso ₹69<div class="qty">
+<button onclick="sub('Double Espresso')">-</button><span id="Double Espresso">0</span><button onclick="add('Double Espresso')">+</button>
+</div></div></div>
+
+<div class="card"><div class="item">Kwaha ₹89<div class="qty">
+<button onclick="sub('Kwaha')">-</button><span id="Kwaha">0</span><button onclick="add('Kwaha')">+</button>
+</div></div></div>
+
+<div class="card"><div class="item">Honey Ginger Tea ₹89<div class="qty">
+<button onclick="sub('Honey Ginger Tea')">-</button><span id="Honey Ginger Tea">0</span><button onclick="add('Honey Ginger Tea')">+</button>
+</div></div></div>
+
+<div class="card"><div class="item">Americano ₹79<div class="qty">
+<button onclick="sub('Americano')">-</button><span id="Americano">0</span><button onclick="add('Americano')">+</button>
+</div></div></div>
+
+<div class="card"><div class="item">Cafe Latte ₹89<div class="qty">
+<button onclick="sub('Cafe Latte')">-</button><span id="Cafe Latte">0</span><button onclick="add('Cafe Latte')">+</button>
+</div></div></div>
+
+<div class="card"><div class="item">Cafe Mocha ₹99<div class="qty">
+<button onclick="sub('Cafe Mocha')">-</button><span id="Cafe Mocha">0</span><button onclick="add('Cafe Mocha')">+</button>
+</div></div></div>
+
+<div class="card"><div class="item">Cappuccino ₹89<div class="qty">
+<button onclick="sub('Cappuccino')">-</button><span id="Cappuccino">0</span><button onclick="add('Cappuccino')">+</button>
+</div></div></div>
+
+<div class="card"><div class="item">Hazelnut Cappuccino ₹99<div class="qty">
+<button onclick="sub('Hazelnut Cappuccino')">-</button><span id="Hazelnut Cappuccino">0</span><button onclick="add('Hazelnut Cappuccino')">+</button>
+</div></div></div>
+
+<div class="card"><div class="item">Irish Cappuccino ₹99<div class="qty">
+<button onclick="sub('Irish Cappuccino')">-</button><span id="Irish Cappuccino">0</span><button onclick="add('Irish Cappuccino')">+</button>
+</div></div></div>
+
+<div class="card"><div class="item">Vanilla Cappuccino ₹99<div class="qty">
+<button onclick="sub('Vanilla Cappuccino')">-</button><span id="Vanilla Cappuccino">0</span><button onclick="add('Vanilla Cappuccino')">+</button>
+</div></div></div>
+
+<div class="card"><div class="item">Caramel Cappuccino ₹99<div class="qty">
+<button onclick="sub('Caramel Cappuccino')">-</button><span id="Caramel Cappuccino">0</span><button onclick="add('Caramel Cappuccino')">+</button>
+</div></div></div>
+
+<div class="total">Total: <span id="total">₹0</span></div>
+
+<div class="btn whatsapp" onclick="orderNow()">📲 Send Order on WhatsApp</div>
 
 <div class="btn review" onclick="window.location.href='https://search.google.com/local/writereview?placeid=PLACE_ID_HERE'">
 ⭐ Leave Google Review
 </div>
 
 </div>
+
+<footer>No App • No Forms • Fast Ordering</footer>
+
 </body>
 </html>
+
